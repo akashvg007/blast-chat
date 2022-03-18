@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 import { RootTabScreenProps } from "../types";
-import { Dropdown } from "../components/Molecules/Dropdown";
 
 export default function TabOneScreen({
   navigation,
@@ -11,7 +10,6 @@ export default function TabOneScreen({
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab One</Text>
-      <Dropdown data={["test1", "test2", "test3"]} />
       <View
         style={styles.separator}
         lightColor="#eee"

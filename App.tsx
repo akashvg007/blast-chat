@@ -1,22 +1,46 @@
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import React, { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import { getLocal } from "./helper/common";
+import { View, StyleSheet, ActivityIndicator, Text } from "react-native";
+import { colors } from "./utils/colors";
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+  const [isLoading, setIsLoading] = useState(true);
 
-  if (!isLoadingComplete) {
-    return null;
+  const isLogin = async () => {
+    await getLocal("token");
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    isLogin();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size={100} color={colors.prgreen} />
+        <Text>loading...</Text>
+      </View>
+    );
   } else {
     return (
       <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
         <StatusBar />
       </SafeAreaProvider>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  loaderContainer: {
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    height: 600,
+    backgroundColor: colors.white,
+    justifyContent: "center",
+  },
+});
